@@ -42,6 +42,34 @@ int pop(int *&numeri, int &dim) {
     return valore_finale;
 }
 
+void inserisci_mezzo(const int valore, const int pos, int *&numeri, int &dim) {
+
+    // controlliamo che la posizione inserita dall'utente esista nell'array
+    if (pos < 0 || pos > dim) {
+        std::cout << "Posizione non valida." << std::endl;
+        return;
+    }
+
+    // creiamo un array di dimensione dim+1
+    int *array_temp = new int[dim+1];
+
+    for (int i = 0; i < pos; i++) {
+        array_temp[i] = numeri[i];
+    }
+
+    // inseriamo il nuovo elemento nella posizione fornita dall'utente
+    array_temp[pos] = valore;
+
+    for (int i = pos; i < dim; i++) {
+        array_temp[i+1] = numeri[i];
+    }
+
+    delete[] numeri;
+    dim++;
+
+    numeri = array_temp;
+}
+
 void stampa_array(const int *numeri, const int dim) {
     std::cout << "Gli elementi dell'array sono: ";
     for (int i = 0; i < dim; i++) {
@@ -59,7 +87,8 @@ void menu(int *&v, int &dim) {
         std::cout << "-----------------------------------" << std::endl;
         std::cout << "1. Inserisci un elemento (Push)" << std::endl;
         std::cout << "2. Rimuovi l'ultimo elemento (Pop)" << std::endl;
-        std::cout << "3. Visualizza array corrente" << std::endl;
+        std::cout << "3. Inserisci un elemento in una posizione specifica" << std::endl;
+        std::cout << "4. Visualizza array corrente" << std::endl;
         std::cout << "0. Esci" << std::endl;
         std::cout << "-----------------------------------" << std::endl;
         std::cout << "Scelta: ";
@@ -85,6 +114,19 @@ void menu(int *&v, int &dim) {
                 break;
             }
             case 3: {
+                int valore;
+                int posizione;
+                std::cout << "Inserisci il numero da aggiungere: ";
+                std::cin >> valore;
+
+                std::cout << "Inserisci la posizione in cui aggiungere l'elemento: ";
+                std::cin >> posizione;
+
+                inserisci_mezzo(valore, posizione, v, dim);
+                std::cout << "-> Elemento " << valore << " in posizione " << posizione << " aggiunto con successo." << std::endl;
+                break;
+            }
+            case 4: {
                 stampa_array(v, dim);
                 break;
             }
