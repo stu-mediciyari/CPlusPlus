@@ -2,6 +2,7 @@
 
 void push(const int valore, int *&numeri, int &dim) {
 
+    // creiamo un nuovo array di dimensione dim+1
     int *array_temp = new int[dim+1];
 
     for (int i = 0; i < dim; i++) {
@@ -49,4 +50,51 @@ void stampa_array(const int *numeri, const int dim) {
     std::cout << std::endl;
 }
 
-void funzione_inserisci(int dim = 0) {}
+void menu(int *&v, int &dim) {
+    int scelta;
+
+    do {
+        std::cout << "\n-----------------------------------" << std::endl;
+        std::cout << "      GESTIONE ARRAY DINAMICO      " << std::endl;
+        std::cout << "-----------------------------------" << std::endl;
+        std::cout << "1. Inserisci un elemento (Push)" << std::endl;
+        std::cout << "2. Rimuovi l'ultimo elemento (Pop)" << std::endl;
+        std::cout << "3. Visualizza array corrente" << std::endl;
+        std::cout << "0. Esci" << std::endl;
+        std::cout << "-----------------------------------" << std::endl;
+        std::cout << "Scelta: ";
+
+        std::cin >> scelta;
+
+        switch (scelta) {
+            case 1: {
+                int valore;
+                std::cout << "Inserisci il numero da aggiungere: ";
+                std::cin >> valore;
+                push(valore, v, dim);
+                std::cout << "-> Elemento " << valore << " aggiunto con successo." << std::endl;
+                break;
+            }
+            case 2: {
+                if (dim > 0) {
+                    int rimosso = pop(v, dim);
+                    std::cout << "-> Elemento rimosso: " << rimosso << std::endl;
+                } else {
+                    std::cout << "-> Errore: L'array e' gia' vuoto." << std::endl;
+                }
+                break;
+            }
+            case 3: {
+                stampa_array(v, dim);
+                break;
+            }
+            case 0:
+                std::cout << "Uscita dal programma..." << std::endl;
+                break;
+            default:
+                std::cout << "Scelta non valida, riprova." << std::endl;
+                break;
+        }
+
+    } while (scelta != 0);
+}
