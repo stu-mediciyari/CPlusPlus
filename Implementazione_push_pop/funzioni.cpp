@@ -1,6 +1,6 @@
 #include <iostream>
 
-void push(int valore, int *&numeri, int &dim) {
+void push(const int valore, int *&numeri, int &dim) {
 
     int *array_temp = new int[dim+1];
 
@@ -16,7 +16,7 @@ void push(int valore, int *&numeri, int &dim) {
     numeri = array_temp;
 }
 
-int pop(int *&numeri, int& dim) {
+int pop(int *&numeri, int &dim) {
 
     // Controlliamo la dimensione del vettore.
     if (dim <= 0) {
@@ -40,3 +40,13 @@ int pop(int *&numeri, int& dim) {
 
     return valore_finale;
 }
+
+void stampa_array(const int *numeri, const int dim) {
+    std::cout << "Gli elementi dell'array sono: ";
+    for (int i = 0; i < dim; i++) {
+        std::cout << numeri[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+void funzione_inserisci(int dim = 0) {}
