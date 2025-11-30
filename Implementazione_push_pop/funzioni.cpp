@@ -1,20 +1,41 @@
 #include <iostream>
 
+// Permettiamo alla funzione di modificare dove punta il puntatore originale.
+// *&numeri è un riferimento ad un puntatore.
+// La variabile "numeri" dentro questa funzione non è una nuova variabile che contiene una copia dell'indirizzo.
+// "numeri" è la variabile "v" del main, solo con un nome diverso.
+// *&numeri è un riferimento ad un puntatore --> si riferisce al puntatore *v nel main.
 void push(const int valore, int *&numeri, int &dim) {
 
-    // creiamo un nuovo array di dimensione dim+1
+    // L'operatore new richiede un blocco di memoria contiguo che sia sufficientemente grande da ospitare
+    // esattamente dim+1 numeri interi. Il compilatore utilizza "int" dopo l'istruzione new per calcolare
+    // i byte necessari. Se un int occupa 4 byte e dim è 4 (quindi vogliamo 5 elementi), il sistema calcola
+    // 5x4=20 byte totali contigui. A questo punto new restituisce l'indirizzo di memoria del primo byte del
+    // primo elemento che viene salvato all'interno della variabile puntatore array_temp.
     int *array_temp = new int[dim+1];
 
     for (int i = 0; i < dim; i++) {
+        // numeri[i] esegue in automatico un'operazione di dereferenziazione: numeri[i] = *(numeri+i).
+        // Essendo "numeri" un alias per *v (dichiarata nel main) noi abbiamo a che fare con indirizzi di memoria.
+        // La notazione numeri[i] estrae automaticamente il valore contenuto in posizione i (dereferenziazione) ed
+        // esegue l'operazione inversa su array_temp[i].
+        // L'istruzione seguente è equivalente a *(array_temp+i)=*(numeri+i).
         array_temp[i] = numeri[i];
     }
 
     array_temp[dim] = valore;
 
+    // A differenza delle variabili nello Stack che svaniscono automaticamente quando la funzione termina,
+    // un blocco nello Heap sopravvive indefinitamente finché non viene distrutto esplicitamente. Il punatore numeri
+    // sta puntando al vecchio array (quello piccolo). Eseguendo delete[] numeri, stiamo dicendo al sistema di considerare
+    // quel blocco di memoria come libero.
     delete[] numeri;
     dim++;
 
+    // Dopo aver liberato lo spazio di memoria copiamo l'indirizzo del nuovo blocco dentro la variabile puntatore del
+    // main.
     numeri = array_temp;
+
 }
 
 int pop(int *&numeri, int &dim) {
